@@ -1,8 +1,8 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { TaskEnum } from '../constants/enums';
+import { TaskEnum } from '../../tasks/constants/enums';
 
-@Entity()
+@Entity('tasks')
 export class TaskEntity extends BaseEntity {
   @Column()
   title: string;
@@ -10,6 +10,6 @@ export class TaskEntity extends BaseEntity {
   @Column()
   description: string;
 
-  @Column({ type: 'enum', enum: TaskEnum, default: TaskEnum.PENDING })
+  @Column()
   status: TaskEnum;
 }

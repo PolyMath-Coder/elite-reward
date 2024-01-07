@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Res,
   Post,
   Body,
   Patch,
@@ -16,24 +17,31 @@ import { TaskRoute } from './constants/constants';
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
-  @Post(TaskRoute.TASK)
-  createTask(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.create(createTaskDto);
+  @Post()
+  async createTask(@Body() createTaskDto: CreateTaskDto, @Res() res) {
+    const response = await this.tasksService.create(createTaskDto);
+    res.status(response.responseCode).json(response);
   }
 
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  async findAll(@Res() res) {
+    const response = await this.tasksService.findAll();
+    res.status(response.responseCode).json(response);
   }
 
-  @Get(':id')
+  @Get(TaskRoute.SINGLE_TASK)
   findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
+    return this.tasksService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+  @Patch(TaskRoute.SINGLE_TASK)
+  async update(
+    @Param('id') id: string,
+    @Body() updateTaskDto: UpdateTaskDto,
+    @Res() res,
+  ) {
+    const response = await this.tasksService.update(id, updateTaskDto);
+    res.status(response.responseCode).json(response);
   }
 
   @Delete(':id')
