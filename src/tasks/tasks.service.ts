@@ -33,11 +33,16 @@ export class TasksService {
     }
   }
 
-  async findAll() {
-    const tasks = await this.taskRepo.find();
+  async findAll(query: any) {
+    let limit = query.limit ? parseInt(query.limit) : 10;
+    let page = query.page ? parseInt(query.page) : 1;
+    const tasks = await this.taskRepo.find({
+      take: limit,
+      skip: (page - 1) * limit,
+    });
 
     if (tasks.length == 0) {
-      return ErrorResponse(400, 'No task found', null, null);
+      return ErrorResponse(400, 'No task yet created...', null, null);
     }
     return SuccessResponse(200, 'all tasks now retrieved...', tasks, null);
   }

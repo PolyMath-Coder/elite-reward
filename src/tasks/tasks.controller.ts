@@ -4,12 +4,13 @@ import {
   Res,
   Post,
   Body,
+  Query,
   Patch,
   Param,
   Delete,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './dto/create-task.dto';
+import { CreateTaskDto, RetrieveAllTasksDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskRoute } from './constants/constants';
 
@@ -24,8 +25,8 @@ export class TasksController {
   }
 
   @Get()
-  async findAll(@Res() res) {
-    const response = await this.tasksService.findAll();
+  async findAll(@Query() query: RetrieveAllTasksDto, @Res() res) {
+    const response = await this.tasksService.findAll(query);
     res.status(response.responseCode).json(response);
   }
 
@@ -44,8 +45,8 @@ export class TasksController {
     res.status(response.responseCode).json(response);
   }
 
-  @Delete(':id')
+  @Delete(TaskRoute.SINGLE_TASK)
   remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+    return this.tasksService.remove(id);
   }
 }

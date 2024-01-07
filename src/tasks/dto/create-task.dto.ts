@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateTaskDto {
   @IsString()
@@ -8,4 +8,14 @@ export class CreateTaskDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+}
+
+export class RetrieveAllTasksDto {
+  @IsNumber()
+  @IsOptional()
+  limit?: number;
+
+  @IsNumber()
+  @IsOptional()
+  page?: number;
 }
