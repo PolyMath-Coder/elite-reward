@@ -31,8 +31,9 @@ export class TasksController {
   }
 
   @Get(TaskRoute.SINGLE_TASK)
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(id);
+  async findOne(@Param('id') id: string, @Res() res) {
+    const response = await this.tasksService.findOne(id);
+    res.status(response.responseCode).json(response);
   }
 
   @Patch(TaskRoute.SINGLE_TASK)
@@ -46,7 +47,8 @@ export class TasksController {
   }
 
   @Delete(TaskRoute.SINGLE_TASK)
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(id);
+  async remove(@Param('id') id: string, @Res() res) {
+    const response = await this.tasksService.remove(id);
+    res.status(response.responseCode).json(response);
   }
 }
