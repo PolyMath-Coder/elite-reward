@@ -52,7 +52,6 @@ export class TasksService {
       return ErrorResponse(400, 'Inputted Task ID not valid', null, null);
     }
     const task = await this.taskRepo.findOne({ where: { id: taskId } });
-    console.log(task);
     if (!task) {
       return ErrorResponse(400, 'Oops! task not found...', null, null);
     }
